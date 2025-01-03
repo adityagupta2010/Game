@@ -15,6 +15,12 @@ let food = {
 let direction = "RIGHT";
 let score = 0;
 
+// Touch position variables
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+
 // Draw the board
 function draw() {
   ctx.fillStyle = "white";
@@ -63,7 +69,7 @@ function draw() {
   snake.unshift(head);
 }
 
-// Handle user input
+// Handle user input (keyboard)
 document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
   if (event.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
@@ -71,5 +77,27 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
 });
 
-// Game loop
-const game = setInterval(draw, 100);
+// Handle touch input (swipe)
+canvas.addEventListener("touchstart", (event) => {
+  touchStartX = event.touches[0].clientX;
+  touchStartY = event.touches[0].clientY;
+});
+
+canvas.addEventListener("touchend", (event) => {
+  touchEndX = event.changedTouches[0].clientX;
+  touchEndY = event.changedTouches[0].clientY;
+
+  const diffX = touchEndX - touchStartX;
+  const diffY = touchEndY - touchStartY;
+
+  if (Math.abs(diffX) > Math.abs(diffY)) {
+    // Horizontal swipe
+    if (diffX > 0 && direction !== "LEFT") {
+      direction = "RIGHT";
+    } else if (diffX < 0 && direction !== "RIGHT") {
+      direction = "LEFT";
+    }
+  } else {
+    // Vertical swipe
+    if (diffY > 0 && direction !== "UP") {
+      direction
