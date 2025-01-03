@@ -2,7 +2,7 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-const box = 40; // Size of one square
+const box = 20; // Size of one square
 const rows = canvas.height / box;
 const cols = canvas.width / box;
 
